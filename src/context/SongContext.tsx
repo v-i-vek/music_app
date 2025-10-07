@@ -28,7 +28,7 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
         `${server}/v1/playlist/get-all-user-playlist`,
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOGY1MTBjLTE1ZDctNGUxNi05ZmVhLTI1YTJkNGM3YTBlOSIsImVtYWlsIjoiUmFqbmlzaEBnbWFpbC5jb20iLCJpYXQiOjE3NTk3MjY5MzAsImV4cCI6MTc2MDMzMTczMH0.UYdpmOQtoaNUwWSCgeUGGHNzyMASuFaEhToOoz-WjYs`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOGY1MTBjLTE1ZDctNGUxNi05ZmVhLTI1YTJkNGM3YTBlOSIsImVtYWlsIjoiUmFqbmlzaEBnbWFpbC5jb20iLCJpYXQiOjE3NTk1NjE4NjYsImV4cCI6MTc2MDE2NjY2Nn0.PACa_H1wdUb4qO7_a1BVyiICBWc2wO83lInWCNnntqQ`,
           },
         }
       );
@@ -47,7 +47,7 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
       setLoading(true);
       const { data } = await axios.get(`${server}/v1/song/song`, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOGY1MTBjLTE1ZDctNGUxNi05ZmVhLTI1YTJkNGM3YTBlOSIsImVtYWlsIjoiUmFqbmlzaEBnbWFpbC5jb20iLCJpYXQiOjE3NTk3MjY5MzAsImV4cCI6MTc2MDMzMTczMH0.UYdpmOQtoaNUwWSCgeUGGHNzyMASuFaEhToOoz-WjYs`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOGY1MTBjLTE1ZDctNGUxNi05ZmVhLTI1YTJkNGM3YTBlOSIsImVtYWlsIjoiUmFqbmlzaEBnbWFpbC5jb20iLCJpYXQiOjE3NTk1NjE4NjYsImV4cCI6MTc2MDE2NjY2Nn0.PACa_H1wdUb4qO7_a1BVyiICBWc2wO83lInWCNnntqQ`,
         },
       });
       if (data.data.length > 0) {
