@@ -7,15 +7,19 @@ const AuthContext = createContext<any>({})
 
 export const AuthProvider:React.FC<{children: React.ReactNode}> = ({children})=>{
     const [btnLoading,setBtnLoading] = useState(false)
+    const [token,setToken] = useState();
     
 
     const loginUser = async(userName:any,password:any,navigate:any)=>{
         try {
         setBtnLoading(true)
-        const result = await axios.post("http://localhost:4000/v1/auth/login", {userName,password})
-        if(result.data){
+        const {data} = await axios.post("http://localhost:4000/v1/auth/login", {userName,password})
+        if(data){
             setBtnLoading(false)
-            localStorage.setItem("accessToken",result.data.accessToken)
+            console.log(data.data)
+            console.log(data.data.accessToken)
+            localStorage.setItem("accessToken",data.data.accessToken)
+            setToken(data.data.accessToken)
             navigate("/home")
         }
         } catch (error) {
@@ -25,11 +29,11 @@ export const AuthProvider:React.FC<{children: React.ReactNode}> = ({children})=>
  
 
     return(
-        <AuthContext.Provider value={{loginUser,btnLoading}}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{loginUser,btnLoading,token}}>{children}</AuthContext.Provider>
     )
 }
 
-export const userData = ()=>{
+export const useAuth = ()=>{
   const context = useContext(AuthContext)
   return context
 }

@@ -1,7 +1,7 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { userData } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ export const Login = () => {
 
   const navigate = useNavigate();
 
-  const { loginUser, btnLoading } = userData();
+  const { loginUser, btnLoading,token } = useAuth();
   
   async function submitHandler(e: any) {
     e.preventDefault();
@@ -17,11 +17,16 @@ export const Login = () => {
     loginUser(email, password, navigate);
   }
 
+ useEffect(() => {
+  if (token || localStorage.getItem("accessToken")) {
+    navigate("/home");
+  }
+}, [token, navigate]);
   return (
     <div className="flex items-center justify-center h-screen max-h-screen">
       <div className="bg-black text-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-3xl font-semibold text-center mb-8">
-          Login To Spotify
+          Welcome back!!!
         </h2>
         <form className="mt-8" onSubmit={submitHandler}>
           <div className="mb-4">

@@ -7,11 +7,9 @@ import { SongProvider } from './context/SongContext.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
       <AuthProvider>
         <SongProvider>
           <App />
         </SongProvider>
       </AuthProvider>
-    </BrowserRouter>
 )
