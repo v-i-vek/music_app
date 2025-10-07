@@ -6,6 +6,9 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { useAuth } from "./AuthContext";
+import * as playlistService from "../services/Playlist";
+import * as songService from "../services/Song";
 
 const server = "http://localhost:4000";
 
@@ -20,18 +23,13 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [selectedSong, setSelectedSong] = useState<any>();
   const [playlist, setPlaylist] = useState();
+  const { token } = useAuth();
 
   const fetchPlaylist = useCallback(async () => {
+    if (!token) return;
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        `${server}/v1/playlist/get-all-user-playlist`,
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOGY1MTBjLTE1ZDctNGUxNi05ZmVhLTI1YTJkNGM3YTBlOSIsImVtYWlsIjoiUmFqbmlzaEBnbWFpbC5jb20iLCJpYXQiOjE3NTk4MTYxOTcsImV4cCI6MTc2MDQyMDk5N30.anzFPv6goZOHc02x175AyJyIj6nvWCqZGpEuE7jNCf8`,
-          },
-        }
-      );
+      const { data } = await playlistService.getAllAlbumByUser();
       if (data.data.length > 0) {
         setPlaylist(data.data);
       }
@@ -40,27 +38,23 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
       console.log(error);
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   const fetchSongList = useCallback(async () => {
+    if (!token) return;
     try {
       setLoading(true);
-      const { data } = await axios.get(`${server}/v1/song/song`, {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjOGY1MTBjLTE1ZDctNGUxNi05ZmVhLTI1YTJkNGM3YTBlOSIsImVtYWlsIjoiUmFqbmlzaEBnbWFpbC5jb20iLCJpYXQiOjE3NTk4MTYxOTcsImV4cCI6MTc2MDQyMDk5N30.anzFPv6goZOHc02x175AyJyIj6nvWCqZGpEuE7jNCf8`,
-        },
-      });
+      const { data } = await songService.getAllSongByUser();
       if (data.data.length > 0) {
         setSongs(data.data);
-        
-        setSelectedSong(data.data[0])
+        setSelectedSong(data.data[0]);
       }
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   const [song, setSong] = useState();
   const [index, setIndex] = useState(0);
@@ -83,9 +77,11 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
   }, [index, songs]);
 
   useEffect(() => {
-    fetchPlaylist();
-    fetchSongList();
-  }, []);
+    if (token) {
+      fetchPlaylist();
+      fetchSongList();
+    }
+  }, [token, fetchPlaylist, fetchSongList]);
 
   return (
     <SongContext.Provider
@@ -101,7 +97,7 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
         playlist,
         setPlaylist,
         nextSong,
-        prevSong
+        prevSong,
       }}
     >
       {children}

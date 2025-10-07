@@ -1,47 +1,53 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import type { IAuthUser } from "../interfaces/CommonInteface";
+import type { IUserDetail } from "../interfaces/CommonInteface";
 
-export const Login = () => {
-  const [userData, setUserData] = useState<IAuthUser>({
+const Register = () => {
+  const [userDetail, setUserDetail] = useState<IUserDetail>({
     userName: "",
+    email: "",
     password: "",
   });
 
-  const navigate = useNavigate();
-
-  const { loginUser, btnLoading, token } = useAuth();
-
+  const { registerUser, btnLoading } = useAuth();
   async function submitHandler(e: any) {
     e.preventDefault();
 
-    loginUser(userData);
+    registerUser(userDetail);
   }
-
-  useEffect(() => {
-    if (token || localStorage.getItem("accessToken")) {
-      navigate("/home");
-    }
-  }, [token, navigate]);
   return (
     <div className="flex items-center justify-center h-screen max-h-screen">
       <div className="bg-black text-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-3xl font-semibold text-center mb-8">
-          Welcome back!!!
+          e.target.value Register To Spotify
         </h2>
         <form className="mt-8" onSubmit={submitHandler}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Name</label>
+            <input
+              type="text"
+              placeholder="Enter Name"
+              className="auth-input"
+              value={userDetail?.userName}
+              onChange={(e) =>
+                setUserDetail({ ...userDetail, userName: e.target.value })
+              }
+              required
+            />
+          </div>
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
               Email or username
             </label>
             <input
-              type="text"
+              type="email"
               placeholder="Email or username"
               className="auth-input"
-              value={userData.userName}
+              value={userDetail?.email}
               onChange={(e) =>
-                setUserData({ ...userData, userName: e.target.value })
+                setUserDetail({ ...userDetail, email: e.target.value })
               }
               required
             />
@@ -53,28 +59,30 @@ export const Login = () => {
               type="password"
               placeholder="Enter Password"
               className="auth-input"
-              value={userData.password}
+              value={userDetail?.password}
               onChange={(e) =>
-                setUserData({ ...userData, password: e.target.value })
+                setUserDetail({ ...userDetail, password: e.target.value })
               }
               required
             />
           </div>
 
-          <button disabled={btnLoading} type="submit" className="auth-btn">
-            {btnLoading ? "Please Wait..." : "Login"}
+          <button disabled={btnLoading} className="auth-btn">
+            {btnLoading ? "Please Wait..." : "Register"}
           </button>
         </form>
 
         <div className="text-center mt-6">
           <Link
-            to={"/register"}
+            to={"/login"}
             className="text-sm text-gray-400 hover:text-gray-300"
           >
-            Don't have an Account?
+            Already have an Account?
           </Link>
         </div>
       </div>
     </div>
   );
 };
+
+export default Register;
