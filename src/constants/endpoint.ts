@@ -18,4 +18,5 @@ export const SONG = {
 }
 export const PLAYLIST = {
     GET_ALL_USER_PLAYLIST: BASE_URL + END_POINT.PLAYLIST + '/get-all-user-playlist',
+    GET_PLAYLIST_BY_ID: BASE_URL + END_POINT.PLAYLIST + '/get-playlist-by-id/'
 }

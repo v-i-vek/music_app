@@ -23,6 +23,9 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [selectedSong, setSelectedSong] = useState<any>();
   const [playlist, setPlaylist] = useState();
+  const [albumSong, setAlbumSong] = useState<any>();
+  const [song, setSong] = useState();
+  const [index, setIndex] = useState(0);
   const { token } = useAuth();
 
   const fetchPlaylist = useCallback(async () => {
@@ -56,8 +59,24 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
     }
   }, [token]);
 
-  const [song, setSong] = useState();
-  const [index, setIndex] = useState(0);
+  const fetchSongsFromPlaylist = useCallback(
+    async (id: string) => {
+      if (!token) return;
+      try {
+        setLoading(true);
+        const { data } = await playlistService.getAlbumById(id);
+        if (data.data.length > 0) {
+          console.log(data.data);
+          setAlbumSong(data.data);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    },
+    [token]
+  );
 
   const nextSong = useCallback(() => {
     if (index === songs.length - 1) {
@@ -98,6 +117,8 @@ export const SongProvider: React.FC<SongProviderProps> = ({ children }) => {
         setPlaylist,
         nextSong,
         prevSong,
+        fetchSongsFromPlaylist,
+        albumSong,
       }}
     >
       {children}

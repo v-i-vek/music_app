@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { logOut } = useAuth();
+  const navigate = useNavigate();
   const [token, setToken] = useState(localStorage.getItem("accessToken"));
   const handleLogut = () => {
     logOut();
@@ -15,17 +17,16 @@ const Navbar = () => {
             src="/left_arrow.png"
             className="w-8 bg-black p-2 rounded-2xl cursor-pointer"
             alt=""
+            onClick={() => navigate(-1)}
           />
           <img
             src="/right_arrow.png"
             className="w-8 bg-black p-2 rounded-2xl cursor-pointer"
             alt=""
+            onClick={() => navigate(+1)}
           />
         </div>
         <div className="flex items-center gap-4">
-          <p className="px-4 py-1.5 bg-white text-black rounded-2xl text-[14px]">
-            install App
-          </p>
           <p
             className="bg-white text-black rounded-2xl px-4 py-1.5 text-[14px]"
             onClick={handleLogut}

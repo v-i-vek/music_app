@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import { Login } from "./pages/Login";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import Register from "./pages/Register";
+import { Album } from "./pages/Album";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/album/:id" element={<Album />} />
         </Route>
       </Routes>
     </>

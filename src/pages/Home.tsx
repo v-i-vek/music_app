@@ -35,7 +35,9 @@ const Home = () => {
             {loading ? (
               <p>loading !!!</p>
             ) : (
-              songs?.map((item: any) => <SongCard  id={item.id} title={item.title} key={item.id}/>)
+              songs?.map((item: any) => (
+                <SongCard id={item.id} title={item.title} key={item.id} />
+              ))
             )}
           </div>
         </div>
